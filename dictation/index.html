@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>بازی دیکته</title>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<title>بازی درس فارسی</title>
 <style>
 *{box-sizing:border-box}
 body{font-family:Vazirmatn,Tahoma,sans-serif;background:linear-gradient(180deg,#d9f0ff 0%,#fff3d6 100%);background-attachment:fixed;margin:0;padding:16px;color:#3b2f5c;min-height:100vh}
 .wrap{max-width:480px;margin:0 auto}
-h1{font-size:30px;text-align:center;margin:6px 0 4px;color:#6a3fc7}
+h1{font-size:28px;text-align:center;margin:6px 0 4px;color:#6a3fc7}
 .sub{text-align:center;font-size:15px;color:#7a6aa8;margin:0 0 18px}
 .card{background:#fff;border-radius:24px;padding:22px 18px;text-align:center;box-shadow:0 6px 0 rgba(106,63,199,.15)}
 button{font-family:inherit;font-size:18px;font-weight:700;border:none;border-radius:18px;padding:14px 20px;cursor:pointer;color:#fff;margin:6px 0;transition:transform .1s}
 button:active{transform:scale(.95)}
 .big{display:block;width:100%;font-size:20px;box-shadow:0 5px 0 rgba(0,0,0,.18)}
 .b1{background:#ff7a59}.b2{background:#2fb67c}.b3{background:#4f8cff}.b4{background:#a06be8}
+.small{background:#fff;color:#6a3fc7;border:2px solid #cdbdf5;font-size:14px;padding:6px 14px;margin:0}
 #speak{background:#4f8cff;font-size:22px;padding:18px 28px;border-radius:50px;box-shadow:0 5px 0 #2f63c4;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-#act{background:#2fb67c;box-shadow:0 5px 0 #1f8a5b;min-width:170px}
+#act,#qnext{background:#2fb67c;box-shadow:0 5px 0 #1f8a5b;min-width:170px}
 #snote{font-size:14px;color:#d9534f;min-height:20px;margin:8px 0}
 input{font-family:inherit;font-size:26px;text-align:center;width:100%;max-width:340px;height:60px;border:3px solid #cdbdf5;border-radius:18px;outline:none;color:#3b2f5c}
 input:focus{border-color:#6a3fc7}
@@ -28,7 +28,7 @@ input:focus{border-color:#6a3fc7}
 .bar{height:16px;background:#fff;border-radius:10px;margin:0 0 16px;overflow:hidden;box-shadow:inset 0 2px 0 rgba(0,0,0,.08)}
 .bar div{height:100%;width:0;background:linear-gradient(90deg,#ffb84d,#ff7a59);border-radius:10px;transition:width .4s}
 .ok{color:#1f8a5b;font-weight:700;font-size:26px}
-.bad{color:#d9534f;font-weight:700}
+.bad{color:#d9534f;font-weight:700;font-size:18px}
 .word{font-size:30px;font-weight:700;color:#3b2f5c}
 .src{display:inline-block;background:#efe6ff;color:#5a2fb0;padding:6px 16px;border-radius:20px;font-size:15px;margin-top:10px}
 .chip{display:inline-block;background:#fff0c2;color:#7a5200;padding:6px 16px;border-radius:14px;margin:4px;font-size:20px;font-weight:700}
@@ -40,24 +40,37 @@ input:focus{border-color:#6a3fc7}
 .fall{position:fixed;top:-40px;font-size:28px;animation:fall 2s linear forwards;pointer-events:none;z-index:9}
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.8}}
 .stars{font-size:38px;margin:6px 0}
+.opt{display:block;width:100%;background:#fff;color:#3b2f5c;border:3px solid #cdbdf5;box-shadow:0 4px 0 #cdbdf5;font-size:20px;margin:10px 0}
+.opt.right{background:#2fb67c;border-color:#1f8a5b;box-shadow:0 4px 0 #1f8a5b;color:#fff}
+.opt.no{background:#ff7a59;border-color:#d9534f;box-shadow:0 4px 0 #d9534f;color:#fff}
+.qw{font-size:34px;font-weight:700;color:#6a3fc7;display:inline-block;margin:0 6px}
+#qtext{font-size:20px;margin:6px 0 12px}
+#qfb{min-height:70px;margin:10px 0}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>بازی دیکته ✏️</h1>
-<p class="sub">کلمه را بشنو، بنویس و ستاره بگیر!</p>
+<h1>بازی درس فارسی ✏️</h1>
+<p class="sub">یاد بگیر، بازی کن و ستاره بگیر!</p>
 
 <div id="menu" class="card">
 <div class="mascot">🦊</div>
-<p style="font-size:19px;font-weight:700;margin:0 0 10px">کدام بخش را بازی کنیم؟</p>
-<button class="big b4" data-set="all">همهٔ کلمه‌ها (۵۱)</button>
-<button class="big b1" data-set="lesson">درس آفریدگار زیبایی (۳۰)</button>
-<button class="big b2" data-set="s1">شعر ستایش (۹)</button>
-<button class="big b3" data-set="s2">شعر خبر داغ (۱۲)</button>
+<p style="font-size:19px;font-weight:700;margin:0 0 10px">چه بازی‌ای کنیم؟</p>
+<button class="big b1" data-mode="dict">دیکته ✏️</button>
+<button class="big b2" data-mode="mean">معنی کلمه‌ها 📖</button>
+<button class="big b3" data-mode="ant">متضاد ⚖️</button>
+<button class="big b4" data-mode="fam">هم‌خانواده 👨‍👩‍👧</button>
+</div>
+
+<div id="sub" class="card" style="display:none">
+<div class="mascot">🦊</div>
+<p id="subtitle" style="font-size:19px;font-weight:700;margin:0 0 10px"></p>
+<div id="subbtns"></div>
+<button id="subback" class="small" style="margin-top:12px">بازگشت</button>
 </div>
 
 <div id="game" style="display:none">
-<div class="top"><span id="prog"></span><span id="score"></span></div>
+<div class="top"><button class="small" id="gback">منو</button><span id="prog"></span><span id="score"></span></div>
 <div class="bar"><div id="bar"></div></div>
 <div class="card" id="gcard">
 <p id="roundlabel" style="font-size:14px;color:#a06be8;margin:0 0 8px;font-weight:700"></p>
@@ -70,14 +83,27 @@ input:focus{border-color:#6a3fc7}
 </div>
 </div>
 
+<div id="quiz" style="display:none">
+<div class="top"><button class="small" id="qback">منو</button><span id="qprog"></span><span id="qscore"></span></div>
+<div class="bar"><div id="qbar"></div></div>
+<div class="card" id="qcard">
+<p id="qlabel" style="font-size:14px;color:#a06be8;margin:0 0 8px;font-weight:700"></p>
+<div id="qtext"></div>
+<div id="qopts"></div>
+<div id="qfb"></div>
+<button id="qnext" style="display:none">بعدی ➜</button>
+</div>
+</div>
+
 <div id="end" class="card" style="display:none">
 <div class="mascot" id="endmascot">🏆</div>
 <p id="endtitle" style="font-size:24px;font-weight:700;margin:0 0 4px;color:#6a3fc7"></p>
 <div class="stars" id="endstars"></div>
 <p id="endtext" style="color:#7a6aa8;font-size:17px"></p>
 <div id="wronglist"></div>
-<button id="retry" class="big b1" style="display:none">تمرین کلمه‌های غلط 💪</button>
-<button id="back" class="big b3">بخش دیگر</button>
+<button id="retry" class="big b1" style="display:none">تمرین غلط‌ها 💪</button>
+<button id="again" class="big b2">یک دور جدید 🔄</button>
+<button id="back" class="big b3">بازگشت به منو</button>
 </div>
 </div>
 
@@ -93,12 +119,46 @@ var EXTS=['.m4a','.mp3','.wav','.aac'];
 var SETS={},counter=0;
 ['lesson','s1','s2'].forEach(function(k){SETS[k]=RAW[k].map(function(w){counter++;return {w:w,s:k,id:counter}})});
 SETS.all=SETS.lesson.concat(SETS.s1,SETS.s2);
-var pool=[],idx=0,wrong=[],score=0,answered=false,round=1;
+
+var MEAN={
+l1:[["انبوه","زیاد"],["دل انگیز","زیبا"],["جلا","برّاق کردن"],["جهان افروز","روشن کننده ی جهان"],["انتظار","چشم به راه بودن"],["نشانید","گذاشت ، فرو نشانید"],["اثر","علامت"],["نیلی","رنگ آبی تیره"],["آویخت","آویزان کرد"],["قشر","لایه ، پوسته"],["برکه","جایی که آب جمع می شود"],["رمه","گلّه ی گوسفند"],["پوشش","لباس"],["تپید","حرکت کرد ، بی قرار شد"],["پهن کرد","گسترد"],["دشواری","سختی"],["تیره","تاریک"],["پراکند","پخش کرد"],["دریغ","افسوس"],["از پس","از پشت"],["غوک","قورباغه"],["نظاره کنند","نگاه کنند ، تماشا کنند"],["چیره دست","ماهر"],["خودنمایی","نشان دادن خود"],["ضخیم","کلفت"],["داوری","قضاوت"],["معرفت","شناخت"],["پهنه","میدان ، سطح"],["گریخت","فرار کرد"],["ارغوانی","قرمز مایل به بنفش"],["پذیرفت","قبول کرد ، به عهده گرفت"],["زینت داد","آراست ، تزیین کرد"],["تاب نیاوردند","تحمل نکردند"],["شگفت انگیز","تعجّب آور ، عجیب و غریب"],["بگشود","باز کرد"],["گلگون","سرخ رنگ"],["دمی","لحظه ای"],["هوشیار","آگاه"],["بُوَد","باشد"],["سراغ","پی چیزی رفتن"]],
+l2:[["جامه","لباس"],["راه یابی","پیدا کردن مسیر"],["آسودگی","آرامش"],["بی پروا","نترس ، شجاع ، بی باک"],["عهده","مسئولیت ، وظیفه"],["راه و رسم","روش"],["کوچ","مهاجرت"],["هیجان","شور و شوق"],["پی در پی","پیوسته ، پشت سرهم"],["لازم","واجب"],["ناچار","مجبور ، ناگزیر"],["اصلاً","ابداً ، به هیچ وجه"],["دشواری","سختی"],["اوقات","وقت ها ، زمان ها"],["می ربایند","می دزدند"],["معتدل","نه زیاد سرد و نه زیاد گرم"],["همتا","مانند ، شبیه"],["اوایل","آغاز"],["جفت","زوج ، دو تا"],["لطیف","نرم ، ملایم"],["التماس کنان","اصرار کنان"],["برمی خیزیم","بلند می شویم"],["طفل","کودک ، بچّه"],["پیشین","گذشته"],["فرصت","وقت مناسب برای کاری"],["نهاده است","قرار داده است"],["قوی پیکر","نیرومند"],["سپری شدن","گذشتن"],["جنب و جوش","تلاش و فعالیت بسیار"],["نیرومند","قوی ، دارای زور و قدرت"],["منتظر","چشم به راه"],["باعث","علّت ، سبب"],["دل نشین","جذّاب ، زیبا و قشنگ"],["بیابند","پیدا کنند"],["اعتراض کرد","ایراد گرفت"],["شگفتی","تعجّب"],["شگفت زده","متعجّب"],["پیمودن","طی کردن ، پشت سر گذاشتن"],["به خاطر","برای"],["باز می یابد","دوباره پیدا می کند"],["برخاست","بلند شد"],["نشان","علامت ، نشانه"],["کمیاب","آن چه کم است"],["لطف","مهربانی"],["جست","جهید ، پرید"]]
+};
+var ANT={
+l1:[["روشنایی",["تاریکی"]],["تیره",["روشن"]],["دشوار",["آسان"]],["بهتر",["بدتر"]],["داغ",["سرد"]],["نیکی",["بدی"]],["ناپدید",["پیدا"]],["بی حوصله",["با حوصله"]],["برّاق",["کَدِر","تیره"]],["هست",["نیست"]],["نهان",["آشکار"]],["نخست",["آخر"]],["گرم",["سرد"]],["خواب",["بیداری"]],["شروع",["پایان"]],["سنگین",["سبک"]],["زیبا",["زشت"]],["نازک",["کُلُفت"]],["آهسته",["سریع"]],["چیره دست",["نا وارد","ناشی"]],["متّصل",["مُنفَصل","جدا"]],["دیدیم",["ندیدیم"]]],
+l2:[["اوایل",["اواخر"]],["طولانی",["کوتاه"]],["جوان",["پیر"]],["قوی",["ضعیف"]],["دوست",["دشمن"]],["دور",["نزدیک"]],["آغاز",["پایان"]],["دانا",["نادان"]],["غمگین",["شاد","خوشحال"]],["کمیاب",["زیاد"]],["دشواری",["راحتی","آسانی"]],["سؤال",["پاسخ","جواب"]],["آهسته",["سریع","تند"]],["معلوم",["مجهول"]],["دراز",["کوتاه"]],["بالا",["پایین"]],["لطف",["نامهربانی"]]]
+};
+var FAM={
+l1:[["صبح",["صبحگاه","صبحی"]],["اطراف",["طرف","طرفی"]],["طبیعت",["طبیعی","طبایع"]],["معرفت",["معروف","تعریف"]],["روشن",["روشنایی","روشنی"]],["تصویر",["تصاویر","مُصوّر"]],["نقّاش",["نقش","نقشه"]],["مهاجر",["مهاجرت","هاجر"]],["انتظار",["منتظر","نظر"]],["پهن",["پهنا","پهناور"]],["منظره",["ناظر","نظر"]],["مزارع",["مزرعه","زراعت"]],["تصمیم",["مُصمَّم","تصمیمی"]],["سطح",["مسطّح","سُطوح"]],["زینت",["تزیین","تزیینات"]],["هوش",["هوشیار","هوشمند"]],["اثر",["تاثیر","مؤثّر"]],["هنرمند",["هنر","هنرنمای"]],["قشر",["اقشار","قشری"]],["ضخیم",["ضخامت"]],["جوی",["جوینده","جویا"]],["نَخُست",["نخستین","نخُستی"]]],
+l2:[["لطیف",["لطف","لطافت"]],["معلوم",["علم","عالِم","معلّم"]],["طولانی",["طول","طویل"]],["تعجّب",["عجب","عجیب"]],["اعتراض",["معترض"]],["غرور",["مغرور"]],["تعهّد",["عهد","عهده"]],["جمع",["مجموع","جامع"]],["سفر",["مسافر","مسافرت"]],["اوقات",["وقت"]],["معتدل",["عدل","اعتدال"]],["مشغول",["شغل","شاغل"]],["خراب",["تخریب","مُخرِّب"]],["عشق",["عاشق","معشوق"]],["مهم",["مهمّات","مهمّی"]],["لرز",["لرزش"]],["ضعیف",["ضعف","مستضعف"]],["موقع",["موقعیّت","مواقع"]]]
+};
+var DATA={mean:MEAN,ant:ANT,fam:FAM};
+var LN={l1:"درس ۱",l2:"درس ۲"};
+var TN={mean:"معنی کلمه",ant:"متضاد",fam:"هم‌خانواده"};
+
+var pool=[],idx=0,wrong=[],score=0,answered=false,round=1,mode='dict',lastRestart=null,cq=null;
 var $=function(i){return document.getElementById(i)};
+function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'.charAt(d)})}
 function norm(s){return s.replace(/[\u064B-\u0652\u0640\u200c\u200d\s]/g,'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ة/g,'ه')}
 function variants(w){return w.split('/').map(function(x){return x.trim()})}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
-function show(id){['menu','game','end'].forEach(function(x){$(x).style.display=x===id?'block':'none'})}
+function pick(a,n){return shuffle(a).slice(0,n)}
+function uniq(a){var o=[];a.forEach(function(x){if(o.indexOf(x)<0)o.push(x)});return o}
+function tokens(s){return s.split(/[\s،]+/).filter(function(t){return t.length>=3})}
+function overlap(a,b){var ta=tokens(a);return tokens(b).some(function(t){return ta.indexOf(t)>-1})}
+function show(id){['menu','sub','game','quiz','end'].forEach(function(x){$(x).style.display=x===id?'block':'none'})}
+
+function confetti(){
+  var e=['⭐','🎉','🌸','✨','💛','🎈'];
+  for(var i=0;i<22;i++){
+    var s=document.createElement('span');s.className='fall';
+    s.textContent=e[Math.floor(Math.random()*e.length)];
+    s.style.left=Math.random()*95+'vw';s.style.animationDelay=(Math.random()*.6)+'s';
+    document.body.appendChild(s);
+    (function(x){setTimeout(function(){x.remove()},2800)})(s);
+  }
+}
+function shakeEl(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
 
 var voice=null,audio=null;
 function findVoice(){if(!window.speechSynthesis)return;var v=speechSynthesis.getVoices();voice=v.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf('fa')===0})[0]||null}
@@ -131,39 +191,130 @@ function say(){
 }
 $('speak').onclick=say;
 
-function confetti(){
-  var e=['⭐','🎉','🌸','✨','💛','🎈'];
-  for(var i=0;i<22;i++){
-    var s=document.createElement('span');s.className='fall';
-    s.textContent=e[Math.floor(Math.random()*e.length)];
-    s.style.left=Math.random()*95+'vw';s.style.animationDelay=(Math.random()*.6)+'s';
-    document.body.appendChild(s);
-    (function(x){setTimeout(function(){x.remove()},2800)})(s);
-  }
-}
 function start(items,r){pool=shuffle(items);idx=0;wrong=[];score=0;round=r;show('game');load()}
-function load(){answered=false;$('prog').textContent='کلمهٔ '+(idx+1)+' از '+pool.length;$('score').textContent='⭐ '+score;$('bar').style.width=(idx/pool.length*100)+'%';$('roundlabel').textContent=round>1?'دور تمرین دوباره':'';$('ans').value='';$('ans').disabled=false;$('err').textContent='';$('snote').textContent='';$('fb').innerHTML='';$('act').textContent='بررسی ✓';$('ans').focus()}
+function load(){answered=false;$('prog').textContent='کلمهٔ '+fa(idx+1)+' از '+fa(pool.length);$('score').textContent='⭐ '+fa(score);$('bar').style.width=(idx/pool.length*100)+'%';$('roundlabel').textContent=round>1?'دور تمرین دوباره':'';$('ans').value='';$('ans').disabled=false;$('err').textContent='';$('snote').textContent='';$('fb').innerHTML='';$('act').textContent='بررسی ✓';$('ans').focus()}
 function check(){var v=$('ans').value.trim();if(!v){$('err').textContent='اول کلمه را بنویس';return}$('err').textContent='';
 var it=pool[idx];var ok=variants(it.w).some(function(x){return norm(x)===norm(v)});answered=true;$('ans').disabled=true;
 var src='<div><span class="src">این کلمه مال: '+NAMES[it.s]+'</span></div>';
 if(ok){score++;var m=['آفرین!','عالی بود!','درست نوشتی!','دمت گرم!','فوق‌العاده!'];$('fb').innerHTML='<div class="ok pop">🎉 '+m[Math.floor(Math.random()*m.length)]+'</div>'+src;confetti()}
-else{wrong.push(it);$('fb').innerHTML='<div class="bad">اشکال نداره! شکل درست:</div><div class="word pop">'+variants(it.w).join(' / ')+'</div>'+src;var c=$('gcard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
-$('score').textContent='⭐ '+score;$('act').textContent=idx+1>=pool.length?'پایان 🏁':'کلمهٔ بعدی ➜'}
-function next(){idx++;if(idx>=pool.length){finish()}else load()}
-function finish(){show('end');var n=pool.length,pct=score/n;
-$('endtitle').textContent=wrong.length===0?'همه‌اش درست بود!':score+' از '+n+' کلمه درست';
-$('endmascot').textContent=pct===1?'🏆':(pct>=0.7?'🦊':'🐣');
-var st=pct===1?3:(pct>=0.7?2:1);$('endstars').textContent=new Array(st+1).join('⭐');
-$('endtext').textContent=wrong.length===0?'آفرین، این بخش را کامل تمام کردی!':'این کلمه‌ها را دوباره تمرین کنیم:';
-var wl=$('wronglist');wl.innerHTML='';wrong.forEach(function(it){var s=document.createElement('span');s.className='chip';s.textContent=variants(it.w).join(' / ');wl.appendChild(s)});
-$('retry').style.display=wrong.length?'block':'none';
-if(pct>=0.7)confetti()}
+else{wrong.push(it);$('fb').innerHTML='<div class="bad">اشکال نداره! شکل درست:</div><div class="word pop">'+variants(it.w).join(' / ')+'</div>'+src;shakeEl($('gcard'))}
+$('score').textContent='⭐ '+fa(score);$('act').textContent=idx+1>=pool.length?'پایان 🏁':'کلمهٔ بعدی ➜'}
+
+function makeQ(it){
+  var correct,d,prompt,note,pl;
+  if(it.t==='mean'){
+    correct=it.a;
+    pl=MEAN[it.l].filter(function(r){return r[0]!==it.w&&r[1]!==it.a&&!overlap(it.a,r[1])}).map(function(r){return r[1]});
+    d=pick(uniq(pl),3);
+    prompt='معنی <span class="qw">'+it.w+'</span> کدام است؟';
+    note=it.w+' : '+it.a;
+  } else if(it.t==='ant'){
+    correct=it.a[Math.floor(Math.random()*it.a.length)];
+    var all=[];ANT[it.l].forEach(function(r){all=all.concat(r[1])});
+    pl=uniq(all).filter(function(x){return it.a.indexOf(x)<0&&x!==it.w});
+    d=pick(pl,3);
+    prompt='متضاد <span class="qw">'+it.w+'</span> کدام است؟';
+    note=it.w+' ≠ '+it.a.join(' / ');
+  } else {
+    correct=it.m[Math.floor(Math.random()*it.m.length)];
+    var mem=[];FAM[it.l].forEach(function(r){if(r[0]!==it.w)mem=mem.concat(r[1])});
+    pl=uniq(mem).filter(function(x){return it.m.indexOf(x)<0&&x!==it.w});
+    d=pick(pl,3);
+    prompt='کدام کلمه هم‌خانوادهٔ <span class="qw">'+it.w+'</span> است؟';
+    note='هم‌خانواده‌های «'+it.w+'» : '+it.m.join('، ');
+  }
+  return {prompt:prompt,correct:correct,options:shuffle([correct].concat(d)),note:note};
+}
+function buildItems(type,lesson){
+  var ls=lesson==='both'?['l1','l2']:[lesson],out=[];
+  ls.forEach(function(l){DATA[type][l].forEach(function(r){
+    if(type==='fam'){out.push({t:type,l:l,w:r[0],m:r[1]})}
+    else{out.push({t:type,l:l,w:r[0],a:r[1]})}
+  })});
+  return out;
+}
+function startQuiz(items,r){pool=shuffle(items);idx=0;wrong=[];score=0;round=r;show('quiz');loadQ()}
+function loadQ(){
+  answered=false;var it=pool[idx];cq=makeQ(it);
+  $('qprog').textContent='سؤال '+fa(idx+1)+' از '+fa(pool.length);
+  $('qscore').textContent='⭐ '+fa(score);
+  $('qbar').style.width=(idx/pool.length*100)+'%';
+  $('qlabel').textContent=TN[it.t]+' · '+LN[it.l]+(round>1?' · تمرین دوباره':'');
+  $('qtext').innerHTML=cq.prompt;
+  var box=$('qopts');box.innerHTML='';
+  cq.options.forEach(function(o){
+    var b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=function(){pickOpt(b,o)};box.appendChild(b);
+  });
+  $('qfb').innerHTML='';$('qnext').style.display='none';
+}
+function pickOpt(btn,o){
+  if(answered)return;answered=true;
+  var ok=o===cq.correct,kids=$('qopts').children;
+  for(var i=0;i<kids.length;i++){if(kids[i].textContent===cq.correct)kids[i].classList.add('right')}
+  if(ok){
+    score++;var m=['آفرین!','عالی بود!','درسته!','دمت گرم!','فوق‌العاده!'];
+    $('qfb').innerHTML='<div class="ok pop">🎉 '+m[Math.floor(Math.random()*m.length)]+'</div><div class="src">'+cq.note+'</div>';
+    confetti();
+  } else {
+    btn.classList.add('no');wrong.push(pool[idx]);
+    $('qfb').innerHTML='<div class="bad">اشکال نداره! جواب درست: «'+cq.correct+'»</div><div class="src">'+cq.note+'</div>';
+    shakeEl($('qcard'));
+  }
+  $('qscore').textContent='⭐ '+fa(score);
+  $('qnext').textContent=idx+1>=pool.length?'پایان 🏁':'بعدی ➜';
+  $('qnext').style.display='inline-block';
+}
+
+function next(){idx++;if(idx>=pool.length){finish()}else{mode==='dict'?load():loadQ()}}
+function finish(){
+  show('end');var n=pool.length,pct=score/n;
+  $('endtitle').textContent=wrong.length===0?'همه‌اش درست بود!':fa(score)+' از '+fa(n)+' درست';
+  $('endmascot').textContent=pct===1?'🏆':(pct>=0.7?'🦊':'🐣');
+  var st=pct===1?3:(pct>=0.7?2:1);$('endstars').textContent=new Array(st+1).join('⭐');
+  $('endtext').textContent=wrong.length===0?'آفرین، کامل تمام کردی!':'این‌ها را دوباره تمرین کنیم:';
+  var wl=$('wronglist');wl.innerHTML='';
+  wrong.forEach(function(it){var s=document.createElement('span');s.className='chip';s.textContent=variants(it.w).join(' / ');wl.appendChild(s)});
+  $('retry').style.display=wrong.length?'block':'none';
+  if(pct>=0.7)confetti();
+}
 $('act').onclick=function(){answered?next():check()};
-$('ans').onkeydown=function(e){if(e.key==='Enter'){answered?next():check()}};
-document.addEventListener('keydown',function(e){if(e.key==='Enter'&&answered&&$('game').style.display!=='none'){next()}});
-$('retry').onclick=function(){start(wrong.slice(),round+1)};
+$('qnext').onclick=function(){if(answered)next()};
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter')return;
+  if($('game').style.display==='block'){e.preventDefault();answered?next():check()}
+  else if($('quiz').style.display==='block'&&answered){e.preventDefault();next()}
+});
+$('retry').onclick=function(){var w=wrong.slice();mode==='dict'?start(w,round+1):startQuiz(w,round+1)};
+$('again').onclick=function(){if(lastRestart)lastRestart()};
 $('back').onclick=function(){show('menu')};
-document.querySelectorAll('#menu button[data-set]').forEach(function(b){b.onclick=function(){start(SETS[b.getAttribute('data-set')],1)}});
+$('gback').onclick=function(){show('menu')};
+$('qback').onclick=function(){show('menu')};
+$('subback').onclick=function(){show('menu')};
+
+function launchDict(key){mode='dict';lastRestart=function(){start(SETS[key],1)};lastRestart()}
+function launchQuiz(type,lesson){
+  mode=type;var items=buildItems(type,lesson);
+  lastRestart=function(){startQuiz(shuffle(items).slice(0,15),1)};lastRestart();
+}
+function openSub(m){
+  var names={dict:'دیکته ✏️',mean:'معنی کلمه‌ها 📖',ant:'متضاد ⚖️',fam:'هم‌خانواده 👨‍👩‍👧'};
+  $('subtitle').textContent=names[m]+' — کدام بخش؟';
+  var box=$('subbtns');box.innerHTML='';var opts;
+  if(m==='dict'){
+    opts=[['all','همهٔ کلمه‌ها ('+fa(SETS.all.length)+')','b4'],['lesson','درس آفریدگار زیبایی ('+fa(SETS.lesson.length)+')','b1'],['s1','شعر ستایش ('+fa(SETS.s1.length)+')','b2'],['s2','شعر خبر داغ ('+fa(SETS.s2.length)+')','b3']];
+  } else {
+    var d=DATA[m];
+    opts=[['l1','درس ۱: آفریدگار زیبایی ('+fa(d.l1.length)+')','b1'],['l2','درس ۲: کوچ پرستوها ('+fa(d.l2.length)+')','b2'],['both','هر دو درس ('+fa(d.l1.length+d.l2.length)+')','b4']];
+  }
+  opts.forEach(function(o){
+    var b=document.createElement('button');b.className='big '+o[2];b.textContent=o[1];
+    b.onclick=function(){m==='dict'?launchDict(o[0]):launchQuiz(m,o[0])};
+    box.appendChild(b);
+  });
+  show('sub');
+}
+document.querySelectorAll('#menu button[data-mode]').forEach(function(b){b.onclick=function(){openSub(b.getAttribute('data-mode'))}});
 </script>
 </body>
 </html>
