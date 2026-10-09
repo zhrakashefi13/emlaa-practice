@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بازی دیکته</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{font-family:Vazirmatn,Tahoma,sans-serif;background:linear-gradient(180deg,#d9f0ff 0%,#fff3d6 100%);background-attachment:fixed;margin:0;padding:16px;color:#3b2f5c;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto}
+h1{font-size:30px;text-align:center;margin:6px 0 4px;color:#6a3fc7}
+.sub{text-align:center;font-size:15px;color:#7a6aa8;margin:0 0 18px}
+.card{background:#fff;border-radius:24px;padding:22px 18px;text-align:center;box-shadow:0 6px 0 rgba(106,63,199,.15)}
+button{font-family:inherit;font-size:18px;font-weight:700;border:none;border-radius:18px;padding:14px 20px;cursor:pointer;color:#fff;margin:6px 0;transition:transform .1s}
+button:active{transform:scale(.95)}
+.big{display:block;width:100%;font-size:20px;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.b1{background:#ff7a59}.b2{background:#2fb67c}.b3{background:#4f8cff}.b4{background:#a06be8}
+#speak{background:#4f8cff;font-size:22px;padding:18px 28px;border-radius:50px;box-shadow:0 5px 0 #2f63c4;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+#act{background:#2fb67c;box-shadow:0 5px 0 #1f8a5b;min-width:170px}
+#snote{font-size:14px;color:#d9534f;min-height:20px;margin:8px 0}
+input{font-family:inherit;font-size:26px;text-align:center;width:100%;max-width:340px;height:60px;border:3px solid #cdbdf5;border-radius:18px;outline:none;color:#3b2f5c}
+input:focus{border-color:#6a3fc7}
+#err{color:#d9534f;font-size:15px;min-height:22px;margin:8px 0}
+#fb{min-height:80px;font-size:20px;margin:4px 0 10px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:700;color:#6a3fc7;margin-bottom:8px}
+.bar{height:16px;background:#fff;border-radius:10px;margin:0 0 16px;overflow:hidden;box-shadow:inset 0 2px 0 rgba(0,0,0,.08)}
+.bar div{height:100%;width:0;background:linear-gradient(90deg,#ffb84d,#ff7a59);border-radius:10px;transition:width .4s}
+.ok{color:#1f8a5b;font-weight:700;font-size:26px}
+.bad{color:#d9534f;font-weight:700}
+.word{font-size:30px;font-weight:700;color:#3b2f5c}
+.src{display:inline-block;background:#efe6ff;color:#5a2fb0;padding:6px 16px;border-radius:20px;font-size:15px;margin-top:10px}
+.chip{display:inline-block;background:#fff0c2;color:#7a5200;padding:6px 16px;border-radius:14px;margin:4px;font-size:20px;font-weight:700}
+.mascot{font-size:56px;line-height:1;margin:0 0 6px}
+.pop{animation:pop .5s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.fall{position:fixed;top:-40px;font-size:28px;animation:fall 2s linear forwards;pointer-events:none;z-index:9}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.8}}
+.stars{font-size:38px;margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>بازی دیکته ✏️</h1>
+<p class="sub">کلمه را بشنو، بنویس و ستاره بگیر!</p>
+
+<div id="menu" class="card">
+<div class="mascot">🦊</div>
+<p style="font-size:19px;font-weight:700;margin:0 0 10px">کدام بخش را بازی کنیم؟</p>
+<button class="big b4" data-set="all">همهٔ کلمه‌ها (۵۱)</button>
+<button class="big b1" data-set="lesson">درس آفریدگار زیبایی (۳۰)</button>
+<button class="big b2" data-set="s1">شعر ستایش (۹)</button>
+<button class="big b3" data-set="s2">شعر خبر داغ (۱۲)</button>
+</div>
+
+<div id="game" style="display:none">
+<div class="top"><span id="prog"></span><span id="score"></span></div>
+<div class="bar"><div id="bar"></div></div>
+<div class="card" id="gcard">
+<p id="roundlabel" style="font-size:14px;color:#a06be8;margin:0 0 8px;font-weight:700"></p>
+<button id="speak">🔊 شنیدن کلمه</button>
+<div id="snote"></div>
+<input id="ans" type="text" dir="rtl" autocomplete="off" placeholder="اینجا بنویس">
+<div id="err"></div>
+<div id="fb"></div>
+<button id="act">بررسی ✓</button>
+</div>
+</div>
+
+<div id="end" class="card" style="display:none">
+<div class="mascot" id="endmascot">🏆</div>
+<p id="endtitle" style="font-size:24px;font-weight:700;margin:0 0 4px;color:#6a3fc7"></p>
+<div class="stars" id="endstars"></div>
+<p id="endtext" style="color:#7a6aa8;font-size:17px"></p>
+<div id="wronglist"></div>
+<button id="retry" class="big b1" style="display:none">تمرین کلمه‌های غلط 💪</button>
+<button id="back" class="big b3">بخش دیگر</button>
+</div>
+</div>
+
+<script>
+var NAMES={lesson:"درس آفریدگار زیبایی",s1:"شعر ستایش",s2:"شعر خبر داغ"};
+var RAW={
+lesson:["داوری","جهان‌افروز","نقّاش / نقّاشی","چیره‌دست","شگفت‌انگیز","گردنبند","نرگس","بنفشه","غوک","برکه","تمشک","گلگون","تاب نیاوردن","خوشه","مزارع","آتشین","ارغوانی","صنوبر","جَلا","مهاجر","ناپدید","قشر","برّاق","کبک","دل‌انگیز","درّه","خودنمایی","معرفت","کردگار","هوشیار"],
+s1:["آخر","بندگان","صبحگاه","نهان","نشان","پاکی","نیکی","روشنایی‌ها","خداوند"],
+s2:["کلاغ","سار","سبزه","غنچه","گلبرگ","بی‌حوصله","خمیازه","شاپرک","پهنه","عاقبت","رمه","دِه"]
+};
+var OFFSET=40;
+var EXTS=['.m4a','.mp3','.wav','.aac'];
+var SETS={},counter=0;
+['lesson','s1','s2'].forEach(function(k){SETS[k]=RAW[k].map(function(w){counter++;return {w:w,s:k,id:counter}})});
+SETS.all=SETS.lesson.concat(SETS.s1,SETS.s2);
+var pool=[],idx=0,wrong=[],score=0,answered=false,round=1;
+var $=function(i){return document.getElementById(i)};
+function norm(s){return s.replace(/[\u064B-\u0652\u0640\u200c\u200d\s]/g,'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ة/g,'ه')}
+function variants(w){return w.split('/').map(function(x){return x.trim()})}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function show(id){['menu','game','end'].forEach(function(x){$(x).style.display=x===id?'block':'none'})}
+
+var voice=null,audio=null;
+function findVoice(){if(!window.speechSynthesis)return;var v=speechSynthesis.getVoices();voice=v.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf('fa')===0})[0]||null}
+if(window.speechSynthesis){findVoice();speechSynthesis.onvoiceschanged=findVoice}
+function fail(){$('snote').textContent='صدا پخش نشد. از بزرگ‌ترها بخواه کلمه را بخوانند.'}
+function playUrl(url,onFail){
+  var done=false;function f(){if(done)return;done=true;onFail()}
+  var a=new Audio(url);audio=a;a.onerror=f;
+  var p=a.play();if(p&&p.catch){p.catch(f)}
+}
+function fallbackSpeech(word){
+  if(voice&&window.speechSynthesis){
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(word);u.lang='fa-IR';u.voice=voice;u.rate=0.8;
+    speechSynthesis.speak(u);
+  } else {
+    playUrl('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=fa&q='+encodeURIComponent(word),fail);
+  }
+}
+function tryExt(base,i,word){
+  if(i>=EXTS.length){fallbackSpeech(word);return}
+  playUrl(encodeURI(base+EXTS[i]),function(){tryExt(base,i+1,word)});
+}
+function say(){
+  $('snote').textContent='';
+  if(audio){audio.pause()}
+  var it=pool[idx];
+  var word=variants(it.w)[0].replace(/[\u064B-\u0652]/g,'').replace(/\u200c/g,' ');
+  tryExt('audio/New Recording '+(it.id+OFFSET),0,word);
+}
+$('speak').onclick=say;
+
+function confetti(){
+  var e=['⭐','🎉','🌸','✨','💛','🎈'];
+  for(var i=0;i<22;i++){
+    var s=document.createElement('span');s.className='fall';
+    s.textContent=e[Math.floor(Math.random()*e.length)];
+    s.style.left=Math.random()*95+'vw';s.style.animationDelay=(Math.random()*.6)+'s';
+    document.body.appendChild(s);
+    (function(x){setTimeout(function(){x.remove()},2800)})(s);
+  }
+}
+function start(items,r){pool=shuffle(items);idx=0;wrong=[];score=0;round=r;show('game');load()}
+function load(){answered=false;$('prog').textContent='کلمهٔ '+(idx+1)+' از '+pool.length;$('score').textContent='⭐ '+score;$('bar').style.width=(idx/pool.length*100)+'%';$('roundlabel').textContent=round>1?'دور تمرین دوباره':'';$('ans').value='';$('ans').disabled=false;$('err').textContent='';$('snote').textContent='';$('fb').innerHTML='';$('act').textContent='بررسی ✓';$('ans').focus()}
+function check(){var v=$('ans').value.trim();if(!v){$('err').textContent='اول کلمه را بنویس';return}$('err').textContent='';
+var it=pool[idx];var ok=variants(it.w).some(function(x){return norm(x)===norm(v)});answered=true;$('ans').disabled=true;
+var src='<div><span class="src">این کلمه مال: '+NAMES[it.s]+'</span></div>';
+if(ok){score++;var m=['آفرین!','عالی بود!','درست نوشتی!','دمت گرم!','فوق‌العاده!'];$('fb').innerHTML='<div class="ok pop">🎉 '+m[Math.floor(Math.random()*m.length)]+'</div>'+src;confetti()}
+else{wrong.push(it);$('fb').innerHTML='<div class="bad">اشکال نداره! شکل درست:</div><div class="word pop">'+variants(it.w).join(' / ')+'</div>'+src;var c=$('gcard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+$('score').textContent='⭐ '+score;$('act').textContent=idx+1>=pool.length?'پایان 🏁':'کلمهٔ بعدی ➜'}
+function next(){idx++;if(idx>=pool.length){finish()}else load()}
+function finish(){show('end');var n=pool.length,pct=score/n;
+$('endtitle').textContent=wrong.length===0?'همه‌اش درست بود!':score+' از '+n+' کلمه درست';
+$('endmascot').textContent=pct===1?'🏆':(pct>=0.7?'🦊':'🐣');
+var st=pct===1?3:(pct>=0.7?2:1);$('endstars').textContent=new Array(st+1).join('⭐');
+$('endtext').textContent=wrong.length===0?'آفرین، این بخش را کامل تمام کردی!':'این کلمه‌ها را دوباره تمرین کنیم:';
+var wl=$('wronglist');wl.innerHTML='';wrong.forEach(function(it){var s=document.createElement('span');s.className='chip';s.textContent=variants(it.w).join(' / ');wl.appendChild(s)});
+$('retry').style.display=wrong.length?'block':'none';
+if(pct>=0.7)confetti()}
+$('act').onclick=function(){answered?next():check()};
+$('ans').onkeydown=function(e){if(e.key==='Enter'){answered?next():check()}};
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&answered&&$('game').style.display!=='none'){next()}});
+$('retry').onclick=function(){start(wrong.slice(),round+1)};
+$('back').onclick=function(){show('menu')};
+document.querySelectorAll('#menu button[data-set]').forEach(function(b){b.onclick=function(){start(SETS[b.getAttribute('data-set')],1)}});
+</script>
+</body>
+</html>
